@@ -1,0 +1,8 @@
+# ==============================================================================
+# Equalizer APO Master Configuration
+# Active Profile: Dirac Opteo Acoustic Enhancement
+# ==============================================================================
+
+Include: dirac_opteo.txt
+
+Include: HeSuVi\hesuvi.txt
