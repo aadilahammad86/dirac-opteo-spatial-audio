@@ -27,5 +27,11 @@ if (Test-Path $diracTxt) {
     Remove-Item -Path $diracTxt -Force
 }
 
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$disableStartup = Join-Path $ScriptRoot "Disable-Startup.ps1"
+if (Test-Path $disableStartup) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $disableStartup
+}
+
 Write-Host "Dirac Opteo profile successfully removed." -ForegroundColor Green
 pause

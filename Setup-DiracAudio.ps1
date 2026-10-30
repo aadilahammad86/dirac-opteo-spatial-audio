@@ -98,7 +98,7 @@ if (Test-Path $hrirDir) {
 }
 
 # --- 6. Step 5: Configure Master Equalizer APO Config ---
-Write-Host "[5/5] Configuring Equalizer APO Master Routing Pipeline..." -ForegroundColor Green
+Write-Host "[5/6] Configuring Equalizer APO Master Routing Pipeline..." -ForegroundColor Green
 $masterConfig = Join-Path $ApoConfigDir "config.txt"
 $configBody = @"
 # ==============================================================================
@@ -112,6 +112,13 @@ Include: dirac_opteo.txt
 "@
 Set-Content -Path $masterConfig -Value $configBody -Force
 Write-Host "      Master configuration updated successfully." -ForegroundColor White
+
+# --- 7. Step 6: Enable Automatic Startup on Windows ---
+Write-Host "[6/6] Configuring Windows Startup Integration..." -ForegroundColor Green
+$enableStartup = Join-Path $ScriptRoot "Enable-Startup.ps1"
+if (Test-Path $enableStartup) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $enableStartup
+}
 
 Write-Host ""
 Write-Host "======================================================================" -ForegroundColor Cyan

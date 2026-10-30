@@ -24,6 +24,10 @@ dirac-opteo-spatial-audio/
 ├── install.bat                     <-- 1-Click All-in-One Installer (Right-click -> Run as Administrator)
 ├── Setup-DiracAudio.ps1            <-- PowerShell automated setup script
 ├── Uninstall-DiracAudio.ps1        <-- Clean uninstaller / restorer script
+├── Enable-Startup.ps1              <-- Registers automatic silent startup on Windows logon
+├── Disable-Startup.ps1             <-- Removes startup task/shortcut cleanly
+├── Startup-Watcher.ps1             <-- Background startup verifier & HeSuVi tray launcher
+├── Startup-Launcher.vbs            <-- Invisible launcher (no black console flash on login)
 ├── README.md                       <-- Documentation & setup guide
 ├── LICENSE                         <-- MIT License
 │
@@ -51,12 +55,23 @@ dirac-opteo-spatial-audio/
 3. Follow the on-screen prompts:
    * If Equalizer APO is not installed, the installer will launch. Select your audio playback devices in the Configurator and restart your PC.
    * If HeSuVi is not installed, the installer will launch and extract the components.
-   * The script automatically deploys the `dirac_opteo.txt` EQ curve, 48 kHz/44.1 kHz `dirac_spatial.wav` HRIR profiles, and configures the master pipeline.
+   * The script automatically deploys the `dirac_opteo.txt` EQ curve, 48 kHz/44.1 kHz `dirac_spatial.wav` HRIR profiles, configures the master pipeline, and registers the **automatic Windows startup task**.
 4. **Turn Windows Sonic OFF:**
    * Right-click the Speaker icon in your taskbar -> Sound settings.
    * Under your headphone properties, verify **Spatial audio** is set to **Off** (HeSuVi handles 7.1 virtualization directly in 64-bit floating point).
 
 ---
+
+## ⚡ Windows Startup Integration
+
+The package includes silent, flicker-free background startup integration:
+
+* **Automatic Watcher:** On logon, `Startup-Watcher.ps1` runs invisibly via `Startup-Launcher.vbs` (0-millisecond window style, no flashing command prompt).
+* **Self-Healing Pipeline:** If a Windows Update or audio driver reset overwrites Equalizer APO's `config.txt`, the watcher automatically restores the `dirac_opteo.txt` and `HeSuVi\hesuvi.txt` include directives.
+* **HeSuVi Tray Access:** Launches HeSuVi minimized in the system tray so 7.1 surround controls and volume are instantly accessible.
+* **Management Scripts:**
+  * To enable anytime: Run `powershell -ExecutionPolicy Bypass -File .\Enable-Startup.ps1`
+  * To disable anytime: Run `powershell -ExecutionPolicy Bypass -File .\Disable-Startup.ps1`
 
 ## 🐧 Linux Installation (PipeWire + EasyEffects)
 
